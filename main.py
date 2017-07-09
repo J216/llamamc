@@ -4,59 +4,58 @@ from subprocess import call
 
 w = winamp.winamp()
 
+
+page_info = {}
+page_info['business_name'] = u"Llama MC"
+page_info['desciption'] = u"Music stream controller for AMS-Cluster"
+page_info['about'] = u"Let see where the llama runs now"
+page_info['phone'] = u"(660) 541-1026"
+page_info['phone_link'] = u"+16605411026"
+page_info['address'] = u"Saint Joseph MO"
+page_info['email'] = u"jaredhaer@gmail.com"
+page_info['facebook'] = u"https://www.facebook.com/jared.haer/"
+page_info['twitter'] = u"https://twitter.com/jared216"
+page_info['now_playing']=u"None"
+
+
 app = Flask(__name__)
 app.debug = True
-
-main_nav="""
-<p>
-    <a href="/next">next</a> || <a href="/prev">prev</a>
-</p> 
-<p>
-    <a href="/stop">stop</a> || <a href="/play">play</a><br><br>
-</p>
-<p>
-    MUSIC MODES
-</p>
-<p>
-    <a href="/mode/ton">Type O Negative</a>
-    <br><a href="/mode/deep-sleep">Deep Sleep</a>
-    <br><a href="/mode/night">Night</a>
-    <br><a href="/mode/evening-cooldown">Evening Cooldown</a>
-    <br><a href="/mode/evening">Evening</a>
-    <br><a href="/mode/workday">Workday</a>
-    <br><a href="/mode/morning">Morning</a>
-</p></body></html>
-"""
 
 
 @app.route("/")
 def index():
-    return '<html><head><title>Llama MC</title></head><body><h1><br><br>'+w.getCurrentTrackName()+'</h1><br>'+main_nav
+    page_info['now_playing']=w.getCurrentTrackName()
+    return render_template("index.html",page_info=page_info)
 
 @app.route("/next")
 def next():
     w.next()
-    return '<html><head><title>Llama MC - Next</title></head><body><h1>'+w.getCurrentTrackName() + '<br><a href="/">home</a></h1></body></html>'
+    page_info['now_playing']=w.getCurrentTrackName()
+    return render_template("index.html",page_info=page_info)
 
 @app.route("/prev")
 def prev():
     w.prev()
-    return '<html><head><title>Llama MC - Previous</title></head><body><h1>'+w.getCurrentTrackName()+ '<br><a href="/">home</a></h1></body></html>'
+    page_info['now_playing']=w.getCurrentTrackName()
+    return render_template("index.html",page_info=page_info)
 
 @app.route("/stop")
 def stop():
     w.stop()
-    return '<html><head><title>Llama MC - Stop</title></head><body><h1>'+'Stopped'+ '<br><a href="/">home</a></h1></body></html>'
+    page_info['now_playing']=w.getCurrentTrackName()
+    return render_template("index.html",page_info=page_info)
 
 @app.route("/play")
 def play():
     w.play()
-    return '<html><head><title>Llama MC - Play</title></head><body><h1>'+w.getCurrentTrackName()+ '<br><a href="/">home</a></h1></body></html>'
+    page_info['now_playing']=w.getCurrentTrackName()
+    return render_template("index.html",page_info=page_info)
 
 @app.route("/mode/<music_mode>")
 def musicMode(music_mode):
     call('c:\scr\music-stream-controller\mmsc.bat '+music_mode)
-    return '<html><head><title>Llama MC - '+music_mode+' Mode</title></head><body><h1>Mode set to: '+music_mode+'<br>'+w.getCurrentTrackName()+ '<br><a href="/">home</a></h1></body></html>'
+    page_info['now_playing']=w.getCurrentTrackName()
+    return render_template("index.html",page_info=page_info)
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0",port=15432)
