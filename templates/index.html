@@ -64,6 +64,7 @@
       <div class="jumbotron">
         <h1>{{ page_info['business_name'] }}</h1>
         <p>{{ page_info['now_playing'] }}</p>
+        <audio controls preload="none" autoplay><source src="http://50.27.203.51:8000/ams-core.ddns.net" type="audio/mpeg"></audio>
       </div>
 
       <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
@@ -147,7 +148,7 @@
         <!-- <h1>Wells</h1> -->
       </div>
       <div class="well">
-        <p>{{ page_info['about'] }}</p>
+        <p>{{ page_info['about'] }} <img src="{{ url_for('static', filename='images/llama.gif') }}" alt="Second slide"></p>
       </div>
 
 
